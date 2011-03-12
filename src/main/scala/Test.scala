@@ -16,7 +16,7 @@ object Main{
 	var angle = 0.0f
 	var rotation = 0.0f
 
-	def main(args:Array[String]){
+	def nomain(args:Array[String]){
 		var fullscreen = false
 		for(arg <- args){
 			arg match{
