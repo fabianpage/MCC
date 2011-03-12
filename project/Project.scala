@@ -19,4 +19,7 @@ class MCCProject(info: ProjectInfo) extends DefaultProject(info) {
         
         override def scalaJars = Seq(buildLibraryJar.asFile, buildCompilerJar.asFile)
     })
+    val lwjglRepo = "http://adterrasperaspera.com/lwjgl"
+    val lwjgl = "org.lwjgl" % "lwjgl" % "2.6"
+    val lwjgl = "org.lwjgl" % "lwjgl-util" % "2.6"
 }
