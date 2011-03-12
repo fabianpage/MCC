@@ -14,12 +14,15 @@ class MCCProject(info: ProjectInfo) extends DefaultProject(info) {
             case "sunos" => "solaris" -> ":"
             case x => x -> ":"
         }
+        val asdf = ( "lib")
         
-        override def runJVMOptions = super.runJVMOptions ++ Seq("-Djava.library.path=" + System.getProperty("java.library.path") + separator + ("lib" / "native" / os))
-        
+        override def runJVMOptions = super.runJVMOptions ++ Seq("-Djava.library.path=" + System.getProperty("java.library.path") + separator + asdf)
         override def scalaJars = Seq(buildLibraryJar.asFile, buildCompilerJar.asFile)
     })
-    val lwjglRepo = "http://adterrasperaspera.com/lwjgl"
-    val lwjgl = "org.lwjgl" % "lwjgl" % "2.6"
-    val lwjgl = "org.lwjgl" % "lwjgl-util" % "2.6"
+    val lwjglRepo = "lwjglRepo" at "http://adterrasperaspera.com/lwjgl"
+    val lwjgl = "org.lwjgl" % "lwjgl" % "2.7.1" 
+    val lwjglUtil = "org.lwjgl" % "lwjgl-util" % "2.7.1"
+    val lwjglNative = "org.lwjgl" % "lwjgl-native" % "2.7.1"
+    
 }
+
