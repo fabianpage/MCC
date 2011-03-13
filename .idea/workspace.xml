@@ -74,13 +74,27 @@
       <file leaf-file-name="Wuerfel.scala" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/scala/Wuerfel.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="28" column="39" selection-start="723" selection-end="723" vertical-scroll-proportion="0.5761317">
+            <state line="0" column="59" selection-start="22" selection-end="22" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GL11.class" pinned="false" current="false" current-in-tab="false">
+        <entry file="jar://$PROJECT_DIR$/lib_managed/scala_2.8.1/compile/lwjgl-2.6.jar!/org/lwjgl/opengl/GL11.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="173" column="41" selection-start="8664" selection-end="8677" vertical-scroll-proportion="-4.3333335">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
+  </component>
+  <component name="FindManager">
+    <FindUsagesManager>
+      <setting name="OPEN_NEW_TAB" value="false" />
+    </FindUsagesManager>
   </component>
   <component name="Git.Settings">
     <option name="CHECKOUT_INCLUDE_TAGS" value="false" />
@@ -317,7 +331,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="161" y="22" width="843" height="878" extended-state="0" />
+    <frame x="63" y="22" width="753" height="878" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -377,9 +391,16 @@
         <state line="19" column="14" selection-start="342" selection-end="342" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
+    <entry file="jar://$PROJECT_DIR$/lib_managed/scala_2.8.1/compile/lwjgl-2.6.jar!/org/lwjgl/opengl/GL11.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="173" column="41" selection-start="8664" selection-end="8677" vertical-scroll-proportion="-4.3333335">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/Wuerfel.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="39" selection-start="723" selection-end="723" vertical-scroll-proportion="0.5761317">
+        <state line="0" column="59" selection-start="22" selection-end="22" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
