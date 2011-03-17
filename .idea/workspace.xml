@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="dc0a7907-d8b6-4d6c-902d-b5e0db08e948" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MCC.iml" afterPath="$PROJECT_DIR$/MCC.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project/build/Project.scala" afterPath="$PROJECT_DIR$/project/build/Project.scala" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/resources/prinzessin_lalilu.jpg" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/Wuerfel.scala" afterPath="$PROJECT_DIR$/src/main/scala/Wuerfel.scala" />
     </list>
     <ignored path="MCC.iws" />
@@ -67,7 +65,7 @@
       <file leaf-file-name="Wuerfel.scala" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/scala/Wuerfel.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="93" column="17" selection-start="3101" selection-end="3101" vertical-scroll-proportion="0.44692737">
+            <state line="94" column="7" selection-start="3153" selection-end="3153" vertical-scroll-proportion="0.49162012">
               <folding />
             </state>
           </provider>
@@ -353,7 +351,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/Wuerfel.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="93" column="17" selection-start="3101" selection-end="3101" vertical-scroll-proportion="0.44692737">
+        <state line="94" column="7" selection-start="3153" selection-end="3153" vertical-scroll-proportion="0.49162012">
           <folding />
         </state>
       </provider>
