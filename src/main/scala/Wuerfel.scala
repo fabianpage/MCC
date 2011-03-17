@@ -5,79 +5,102 @@ import org.lwjgl.opengl.Display
 import org.lwjgl.opengl.DisplayMode
 import org.lwjgl.opengl.GL11
 
-class Wuerfel {
+class MCC {
   def start = {
     try {
-      Display.setDisplayMode(new DisplayMode(800, 600));
-      Display.create();
+      Display.setDisplayMode(new DisplayMode(800, 600))
+      Display.create()
     } catch {
       case e => {
-        e.printStackTrace();
-        System.exit(0);
+        e.printStackTrace()
+        System.exit(0)
       }
     }
     // init OpenGL
-    GL11.glMatrixMode(GL11.GL_PROJECTION);
-    GL11.glLoadIdentity();
-    GL11.glOrtho(0, 10, 10, 0, 10, -10);
-    GL11.glMatrixMode(GL11.GL_MODELVIEW);
-    GL11.glTranslatef(5, 5, 0)
+    GL11.glMatrixMode(GL11.GL_PROJECTION)
+    GL11.glLoadIdentity()
+    GL11.glOrtho(0, 10, 10, 0, 10, -10)
+    GL11.glMatrixMode(GL11.GL_MODELVIEW)
+    GL11.glTranslatef(5, 5, 5)
     GL11.glRotatef(-10, 1, 1, 1)
     GL11.glEnable(GL11.GL_DEPTH_TEST)
     GL11.glDepthFunc(GL11.GL_LEQUAL)
     GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT,GL11.GL_NICEST)
+    GL11.glEnable(GL11.GL_CULL_FACE)
 
-    import Wuerfel._
-    /*val w = List(Face((0,0,0), 0, Left, (1,0,1)),
-                 Face((0,0,0), 0, Right, (1,0,1)),
-                 Face((0,0,0), 0, Up, (1,0,1)),
-                 Face((0,0,0), 0, Down, (1,0,1)),
-                 Face((0,0,0), 0, Front, (1,0,1)),
-                 Face((0,0,0), 0, Back, (1,0,1))) */
-    val w = Cube((0.5,0.5,0.5),2)
-
+    import MCC._
 
     while (!Display.isCloseRequested()) {
       // Clear the screen and depth buffer
-      GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+      GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT)
 
       // set the color of the quad (R,G,B,A)
-      GL11.glColor3f(0.5f, 0f, 0f);
+      GL11.glColor3f(0.5f, 0f, 0f)
+      
+      Shapes.drawFace((0,0,0), 1, Front)
 
-
-
-      // draw quad
-      GL11.glBegin(GL11.GL_QUADS);
-
-      for {f <- w.faces
-           p <- f.points
-      } {
-        val c = f.color
-        GL11.glColor3d(c._1, c._2, c._3)
-        GL11.glVertex3d(p._1, p._2, p._3)
-      }
-      GL11.glEnd();
-
-      Display.update();
+      Display.update()
     }
 
-    Display.destroy();
+    Display.destroy()
   }
 }
 
-object Wuerfel {
+object MCC {
+      val r = new scala.util.Random
+    trait Drawable {
+        def draw: Unit
+    }
+    
 
   // Should be some kind of a mathematical Vector
-  type Point = (Double, Double, Double)
   type Color = (Double, Double, Double)
-  sealed abstract class Orientation
-  case object Left extends Orientation
-  case object Right extends Orientation
-  case object Up extends Orientation
-  case object Down extends Orientation
-  case object Front extends Orientation
-  case object Back extends Orientation
-  case class Face(center: Point, size: Float, orientation: Orientation, color: Color) {
+  type Vector = (Double, Double, Double)
+  sealed abstract class Orientation {
+      val vect: Vector
+  }
+  case object Left extends Orientation  { val vect: Vector = (-1, 0, 0) }
+  case object Right extends Orientation { val vect: Vector = (+1, 0, 0) }
+  case object Up extends Orientation    { val vect: Vector = ( 0,+1, 0) }
+  case object Down extends Orientation  { val vect: Vector = ( 0,-1, 0) }
+  case object Front extends Orientation { val vect: Vector = ( 0, 0,+1) }
+  case object Back extends Orientation  { val vect: Vector = ( 0, 0,-1) }
+  
+  object Shapes {
+      def vectProd(v1: Vector, v2: Vector): Vector = (
+        v1._2 * v2._3 - v1._3 * v2._2,
+        v1._3 * v2._1 - v1._1 * v2._3,
+        v1._1 * v2._2 - v1._2 * v2._1
+      )
+      def vectScale(v: Vector, f: Double): Vector = (v._1 * f, v._2 * f, v._3 * f)
+      def vectAdd(v1: Vector, v2: Vector): Vector = (v1._1 + v2._1, v1._2 + v2._2, v1._3 + v2._3)
+      def drawFace(center: Vector, size: Double, orient: Orientation, color: Color = (r.nextDouble, r.nextDouble, r.nextDouble)) = {
+          val v1:Vector = orient match {
+            case Left =>  (0, 1, 1)
+            case Right => (0, 1, 1)
+            case Front => (1, 1, 0)
+            case Back =>  (1, 1, 0)
+            case Up =>    (1, 0, 1)
+            case Down =>  (1, 0, 1)
+          }
+          val v2 = vectProd(orient.vect, v1)
+          val v3 = vectProd(orient.vect, v2)
+          val v4 = vectProd(orient.vect, v3)
+          val vs = (v1 :: v2 :: v3 :: v4 :: Nil).map(vectScale(_, size)).map(vectAdd(center, _))
+          // draw quad
+          GL11.glBegin(GL11.GL_QUADS)
+          GL11.glColor3d(color._1, color._2, color._3)
+          for(v <- vs) {
+            println(v)
+            GL11.glVertex3d(v._1, v._2, v._3)
+          }
+          println("iatrenui")
+          GL11.glEnd()
+      }
+  }
+  
+  /*
+  case class Face(val center: Vector, val size: Double, val orientation: Orientation, val color: Color) extends Drawable {
     val lfd = (-1, -1, -1)
     val rfd = ( 1, -1, -1)
     val lbd = (-1, -1,  1)
@@ -87,28 +110,49 @@ object Wuerfel {
     val lbu = (-1,  1,  1)
     val rbu = ( 1,  1,  1)
 
-    val points = {
+    val Vectors = {
       val cs = orientation match {
-        case Left => (lbd :: lbu :: lfu :: lfd :: Nil).reverse
-        case Right => (rfd :: rfu :: rbu :: rbd :: Nil).reverse
-        case Front => (lfu :: rfu :: rfd :: lfd :: Nil).reverse
-        case Back => (lbd :: rbd :: rbu :: lbu :: Nil).reverse
-        case Up => (lbu :: rbu :: rfu :: lfu :: Nil).reverse
-        case Down => (lfd :: rfd :: rbd :: lbd :: Nil).reverse
+        case Left => (lbd :: lbu :: lfu :: lfd :: Nil)
+        case Right => (rfd :: rfu :: rbu :: rbd :: Nil)
+        case Front => (lfu :: rfu :: rfd :: lfd :: Nil)
+        case Back => (lbd :: rbd :: rbu :: lbu :: Nil)
+        case Up => (lbu :: rbu :: rfu :: lfu :: Nil)
+        case Down => (lfd :: rfd :: rbd :: lbd :: Nil)
       }
       cs.map(c => (c._1 * size + center._1, c._2 * size + center._2, c._3 * size + center._3))
-      // Would be much easier with .* and .+
+      // Would be much easier with .* and .+ (matlab notation)
+    }
+    
+    override def draw = {
+
     }
   }
+  
 
-  case class Cube(center: Point, size: Float) {
-    val r = new scala.util.Random
-    val f: Orientation => Face = Face(center, size, _, (r.nextFloat, r.nextFloat, r.nextFloat))
+  case class Cube(val center: Vector, val size: Double = 1, val color: Color = ) extends Drawable {
+    val f: Orientation => Face = Face(center, size, _, color)
     val faces = (f(Left) :: f(Right) :: f(Up) :: f(Down) :: f(Front) :: f(Back) :: Nil)
+    override def draw = {
+        for(f <- faces)
+            f.draw
+    }
   }
+  
+  case class Grid(private val cubes: List[Cube] = Nil) extends Drawable {
+      def add(where: Orientation, what: Cube): Grid = (cubes.headOption.getOrElse(Cube((.0,.0,.0))), where) match {
+          case (c, Left) => copy(cubes = cubes :+ Cube((c.center._1 + 1,c.center._2,c.center._3)))
+          case (c, Right) => copy(cubes = cubes :+ Cube((c.center._1 - 1,c.center._2,c.center._3)))
+      }
+      
+      def draw = {
+          for(c <- cubes)
+            c.draw
+      }
+  }
+  */
 
   def main(args: Array[String]) = {
-    val w = new Wuerfel
+    val w = new MCC
     w.start
   }
 }
