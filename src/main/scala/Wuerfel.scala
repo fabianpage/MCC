@@ -27,8 +27,14 @@ class MCC {
     GL11.glDepthFunc(GL11.GL_LEQUAL)
     GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT,GL11.GL_NICEST)
     GL11.glEnable(GL11.GL_CULL_FACE)
+    GL11.glEnable(GL11.GL_TEXTURE_2D)
 
     import MCC._
+    import org.newdawn.slick.opengl.TextureLoader
+    import java.io.FileInputStream
+
+    val texture = TextureLoader.getTexture("JPG", new FileInputStream("src/main/resources/prinzessin_lalilu.jpg"))
+    texture.bind
 
     while (Display.isActive) {
       // Clear the screen and depth buffer
@@ -85,14 +91,14 @@ object MCC {
       val v3 = vectProd(v2, orient.vect)
       val v4 = vectProd(v3, orient.vect)
       val vs = (v1 :: v2 :: v3 :: v4 :: Nil).map(vectScale(_, size / 2)).map(vectAdd(center, _))
+      val tcs = (0,0) :: (0,1) :: (1,1) :: (1,0) :: Nil
       // draw quad
       GL11.glBegin(GL11.GL_QUADS)
       GL11.glColor3d(color._1, color._2, color._3)
-      for(v <- vs) {
-        println(v)
+      for{(v,t) <- vs.zip(tcs)} {
+        GL11.glTexCoord2d(t._1, t._2)
         GL11.glVertex3d(v._1, v._2, v._3)
       }
-      println("iatrenui")
       GL11.glEnd()
     }
     def drawCube(center: Vector, size: Double, color: Orientation => Color) = {
