@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="dc0a7907-d8b6-4d6c-902d-b5e0db08e948" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MCC.iml" afterPath="$PROJECT_DIR$/MCC.iml" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/resources/prinzessin_lalilu.jpg" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/Wuerfel.scala" afterPath="$PROJECT_DIR$/src/main/scala/Wuerfel.scala" />
     </list>
     <ignored path="MCC.iws" />
@@ -69,7 +65,16 @@
       <file leaf-file-name="Wuerfel.scala" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/scala/Wuerfel.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="39" column="16" selection-start="1087" selection-end="1087" vertical-scroll-proportion="0.47325101">
+            <state line="94" column="7" selection-start="3153" selection-end="3153" vertical-scroll-proportion="0.49162012">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Project.scala" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/project/build/Project.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="31" column="0" selection-start="1204" selection-end="1204" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -90,6 +95,7 @@
     <option name="changedFiles">
       <list>
         <option value="$PROJECT_DIR$/src/main/scala/Test.scala" />
+        <option value="$PROJECT_DIR$/project/build/Project.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/Wuerfel.scala" />
       </list>
     </option>
@@ -128,7 +134,7 @@
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
   <component name="ProjectReloadState">
-    <option name="STATE" value="0" />
+    <option name="STATE" value="2" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
@@ -276,7 +282,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="61" y="22" width="1308" height="878" extended-state="0" />
+    <frame x="61" y="22" width="980" height="878" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -331,21 +337,21 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$PROJECT_DIR$/lib_managed/scala_2.8.1/compile/lwjgl-2.6.jar!/org/lwjgl/opengl/GL11.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="173" column="41" selection-start="8664" selection-end="8677" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/Test.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="22" selection-start="164" selection-end="164" vertical-scroll-proportion="0.11312849">
+        <state line="8" column="22" selection-start="164" selection-end="164" vertical-scroll-proportion="0.11312849" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project/build/Project.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="31" column="0" selection-start="1204" selection-end="1204" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/Wuerfel.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="39" column="16" selection-start="1087" selection-end="1087" vertical-scroll-proportion="0.47325101">
+        <state line="94" column="7" selection-start="3153" selection-end="3153" vertical-scroll-proportion="0.49162012">
           <folding />
         </state>
       </provider>
