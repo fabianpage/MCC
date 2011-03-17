@@ -30,14 +30,12 @@ class MCC {
 
     import MCC._
 
-    while (!Display.isCloseRequested()) {
+    while (Display.isActive) {
       // Clear the screen and depth buffer
       GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT)
 
-      // set the color of the quad (R,G,B,A)
-      GL11.glColor3f(0.5f, 0f, 0f)
-      
-      Shapes.drawFace((0,0,0), 1, Front)
+      Shapes.drawCube((0,0,0), 1, (_:Orientation) => (0,0,1))
+      Shapes.drawCube((1,1,0), 1, (_:Orientation) => (0,1,0))
 
       Display.update()
     }
@@ -47,7 +45,7 @@ class MCC {
 }
 
 object MCC {
-      val r = new scala.util.Random
+    val r = new scala.util.Random
     trait Drawable {
         def draw: Unit
     }
@@ -67,36 +65,43 @@ object MCC {
   case object Back extends Orientation  { val vect: Vector = ( 0, 0,-1) }
   
   object Shapes {
-      def vectProd(v1: Vector, v2: Vector): Vector = (
-        v1._2 * v2._3 - v1._3 * v2._2,
-        v1._3 * v2._1 - v1._1 * v2._3,
-        v1._1 * v2._2 - v1._2 * v2._1
-      )
-      def vectScale(v: Vector, f: Double): Vector = (v._1 * f, v._2 * f, v._3 * f)
-      def vectAdd(v1: Vector, v2: Vector): Vector = (v1._1 + v2._1, v1._2 + v2._2, v1._3 + v2._3)
-      def drawFace(center: Vector, size: Double, orient: Orientation, color: Color = (r.nextDouble, r.nextDouble, r.nextDouble)) = {
-          val v1:Vector = orient match {
-            case Left =>  (0, 1, 1)
-            case Right => (0, 1, 1)
-            case Front => (1, 1, 0)
-            case Back =>  (1, 1, 0)
-            case Up =>    (1, 0, 1)
-            case Down =>  (1, 0, 1)
-          }
-          val v2 = vectProd(orient.vect, v1)
-          val v3 = vectProd(orient.vect, v2)
-          val v4 = vectProd(orient.vect, v3)
-          val vs = (v1 :: v2 :: v3 :: v4 :: Nil).map(vectScale(_, size)).map(vectAdd(center, _))
-          // draw quad
-          GL11.glBegin(GL11.GL_QUADS)
-          GL11.glColor3d(color._1, color._2, color._3)
-          for(v <- vs) {
-            println(v)
-            GL11.glVertex3d(v._1, v._2, v._3)
-          }
-          println("iatrenui")
-          GL11.glEnd()
+    def vectProd(v1: Vector, v2: Vector): Vector = (
+      v1._2 * v2._3 - v1._3 * v2._2,
+      v1._3 * v2._1 - v1._1 * v2._3,
+      v1._1 * v2._2 - v1._2 * v2._1
+    )
+    def vectScale(v: Vector, f: Double): Vector = (v._1 * f, v._2 * f, v._3 * f)
+    def vectAdd(v1: Vector, v2: Vector): Vector = (v1._1 + v2._1, v1._2 + v2._2, v1._3 + v2._3)
+    def drawFace(center: Vector, size: Double, orient: Orientation, color: Color = (r.nextDouble, r.nextDouble, r.nextDouble)) = {
+      val v1:Vector = orient match {
+        case Left =>  (0, 1, 1)
+        case Right => (0, 1, 1)
+        case Front => (1, 1, 0)
+        case Back =>  (1, 1, 0)
+        case Up =>    (1, 0, 1)
+        case Down =>  (1, 0, 1)
       }
+      val v2 = vectProd(v1, orient.vect)
+      val v3 = vectProd(v2, orient.vect)
+      val v4 = vectProd(v3, orient.vect)
+      val vs = (v1 :: v2 :: v3 :: v4 :: Nil).map(vectScale(_, size / 2)).map(vectAdd(center, _))
+      // draw quad
+      GL11.glBegin(GL11.GL_QUADS)
+      GL11.glColor3d(color._1, color._2, color._3)
+      for(v <- vs) {
+        println(v)
+        GL11.glVertex3d(v._1, v._2, v._3)
+      }
+      println("iatrenui")
+      GL11.glEnd()
+    }
+    def drawCube(center: Vector, size: Double, color: Orientation => Color) = {
+      val fs = Left :: Right :: Up :: Down :: Front :: Back :: Nil
+      for(f <- fs) {
+        drawFace(vectAdd(center, vectScale(f.vect, size / 2)), size, f, color(f))
+      }
+    }
+
   }
   
   /*
