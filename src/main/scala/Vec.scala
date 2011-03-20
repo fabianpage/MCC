@@ -1,6 +1,20 @@
 package we.MCC.Vec;
 
-case class Vector3D[A: Numeric]( x:A, y:A, z:A)/*(implicit numeric:Numeric[A])*/ {
+object Vector3D {
+  def apply[A: Numeric](x:A, y:A, z:A) = {
+    new Vector3D(x,y,z)
+  }
+}
+
+class Vector3D[A: Numeric] private ( val v:List[A]){
+
+  val x = v.head
+  val y = v.tail.head
+  val z = v.tail.tail.head
+
+  def this(xx:A, yy:A, zz:A) = {
+    this(xx::yy::zz::Nil)
+  }
 
   type Vec = Vector3D[A]
   val numeric:Numeric[A] = implicitly[Numeric[A]]
@@ -14,11 +28,12 @@ case class Vector3D[A: Numeric]( x:A, y:A, z:A)/*(implicit numeric:Numeric[A])*/
   }
 
   def vecOp(op: (A,A) => A)(that:Vec): Vec = {
-    new Vec(
+    /*new Vec(
       op(x, that.x),
       op(y, that.y),
       op(z, that.z)
-    )
+    )*/
+    new Vector3D[A](v.zip(that.v).map(e => op(e._1,e._2)))
   }
 
   def scalarOp(op: (A,A) => A)(that:A):Vec = {
