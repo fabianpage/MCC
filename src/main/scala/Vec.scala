@@ -1,8 +1,8 @@
 package we.MCC.Vec;
 
-case class Vec3D[A: Numeric](val x:A, val y:A, val z:A)/*(implicit numeric:Numeric[A])*/ {
+case class Vec3D[A: Numeric]( x:A, y:A, z:A)/*(implicit numeric:Numeric[A])*/ {
 
-  val numeric = implicitly[Numeric[A]]
+  val numeric:Numeric[A] = implicitly[Numeric[A]]
 
   implicit def AtoRichA(x:A):RichA = new RichA(x)
 
