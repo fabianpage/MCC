@@ -75,7 +75,7 @@
       <file leaf-file-name="Vec.scala" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/scala/Vec.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="41" column="92" selection-start="977" selection-end="977" vertical-scroll-proportion="0.67489713">
+            <state line="26" column="4" selection-start="674" selection-end="674" vertical-scroll-proportion="0.42798355">
               <folding />
             </state>
           </provider>
@@ -516,7 +516,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/Vec.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="92" selection-start="977" selection-end="977" vertical-scroll-proportion="0.67489713">
+        <state line="26" column="4" selection-start="674" selection-end="674" vertical-scroll-proportion="0.42798355">
           <folding />
         </state>
       </provider>

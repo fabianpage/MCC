@@ -6,7 +6,6 @@ case class Vector3D[A: Numeric]( x:A, y:A, z:A)/*(implicit numeric:Numeric[A])*/
   val numeric:Numeric[A] = implicitly[Numeric[A]]
 
   implicit def AtoRichA(x:A):RichA = new RichA(x)
-
   class RichA(val x:A) {
     def +(that: A): A = numeric.plus(x,that)
     def -(that: A): A = numeric.minus(x,that)
@@ -26,11 +25,9 @@ case class Vector3D[A: Numeric]( x:A, y:A, z:A)/*(implicit numeric:Numeric[A])*/
     vecOp(op)(new Vec(that,that,that))
   }
 
-  //def plus(that:Vec):Vec = vecOp((_ + _)) _
 
 
   def crossProd = ×(_)
-  // Mathematisches Symbol?
   def ×(that:Vector3D[A]): Vector3D[A] = {
     new Vector3D[A](
       (y * that.z) - (z * that.y),
@@ -40,47 +37,19 @@ case class Vector3D[A: Numeric]( x:A, y:A, z:A)/*(implicit numeric:Numeric[A])*/
   }
 
   def ⋅ = dotProduct(_)
-  //def ⋅(that: Vector3D[A]) = dotProduct(that)
   def dotProduct = vecOp(_ * _) _
-  /*def dotProduct(that: Vector3D[A]): A = {
-    (x * that.x) + (y * that.y) + (z *that.z)
-  }*/
 
-  def unary_- : Vector3D[A] = {
-    new Vector3D[A](
-      -x,
-      -y,
-      -z
-    )
+
+  def unary_- = {
+    val zero = new Vector3D[A](numeric.zero, numeric.zero, numeric.zero)
+    zero - _
   }
 
   def * = scalarOp(_ * _) _
-  /*def *(f:A) = scalarProd(f)
-  def scalarProd(f:A):Vector3D[A] = {
-    new Vector3D[A](
-      x * f,
-      y * f,
-      z * f
-    )
-  }  */
 
   def + = vecOp(_ + _) _
-  /*def +(that: Vector3D[A]) : Vector3D[A] = {
-    Vector3D[A](
-      x + that.x,
-      y + that.y,
-      z + that.z
-    )
-  }*/
 
   def - = vecOp(_ + _) _
-  /*def -(that: Vector3D[A]) : Vector3D[A] = {
-    Vector3D[A](
-      x - that.x,
-      y - that.y,
-      z - that.z
-    )
-  }*/
 }
 
 object VecMain {
