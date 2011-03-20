@@ -3,3 +3,5 @@ project/boot/
 .DS_Store
 lib_managed
 src/main/scala/NumericErrorTest.scala
+MCC.iml
+.idea
