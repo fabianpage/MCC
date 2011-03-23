@@ -38,6 +38,7 @@ class MCC {
     texture.bind
 
     while (Display.isActive) {
+      import _root_.we.MCC.Vector3D.Vector3D
       // Clear the screen and depth buffer
       GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT)
 
@@ -52,7 +53,10 @@ class MCC {
 }
 
 object MCC {
-    val r = new scala.util.Random
+
+  import _root_.we.MCC.Vector3D.Vector3D
+
+  val r = new scala.util.Random
     trait Drawable {
         def draw: Unit
     }
@@ -73,6 +77,7 @@ object MCC {
 
   object Shapes {
     def drawFace(center: Vec, size: Double, orient: Orientation, color: Color = (r.nextDouble, r.nextDouble, r.nextDouble)) = {
+      import _root_.we.MCC.Vector3D.Vector3D
       val v1:Vector3D[Double] = orient match {
         case Left =>  Vector3D(0, 1, 1)
         case Right => Vector3D(0, 1, 1)
