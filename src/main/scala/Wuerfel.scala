@@ -4,7 +4,13 @@ import org.lwjgl.LWJGLException
 import org.lwjgl.opengl.Display
 import org.lwjgl.opengl.DisplayMode
 import org.lwjgl.opengl.GL11
-import we.MCC.Vec._
+import we.MCC.Vector3._
+
+import org.newdawn.slick.opengl.{
+  TextureLoader,
+  Texture
+}
+import java.io.FileInputStream
 
 class MCC {
   def start = {
@@ -29,21 +35,37 @@ class MCC {
     GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT,GL11.GL_NICEST)
     GL11.glDisable(GL11.GL_CULL_FACE)
     GL11.glEnable(GL11.GL_TEXTURE_2D)
+    
+    GL11.glViewport(0,0, 800, 600)
 
     import MCC._
-    import org.newdawn.slick.opengl.TextureLoader
-    import java.io.FileInputStream
 
-    val texture = TextureLoader.getTexture("JPG", new FileInputStream("src/main/resources/textureEis.jpg"))
-    texture.bind
+
+    val texture: Map[Orientation, Texture] = Map(
+      Left ->  TextureLoader.getTexture("JPG", new FileInputStream("src/main/resources/textureEis.jpg")),
+      Right -> TextureLoader.getTexture("JPG", new FileInputStream("src/main/resources/textureZwei.jpg")),
+      Up ->    TextureLoader.getTexture("JPG", new FileInputStream("src/main/resources/textureDrei.jpg")),
+      Down ->  TextureLoader.getTexture("JPG", new FileInputStream("src/main/resources/textureVier.jpg")),
+      Front -> TextureLoader.getTexture("JPG", new FileInputStream("src/main/resources/textureFuef.jpg")),
+      Back ->  TextureLoader.getTexture("JPG", new FileInputStream("src/main/resources/textureSechs.jpg"))
+    )
+    
+    val color: Map[Orientation, Color] = Map(
+      Left ->  (1,1,0),
+      Right -> (1,0,1),
+      Up ->    (1,1,1),
+      Down ->  (0,1,1),
+      Front -> (1,1,1),
+      Back ->  (1,1,1)
+    )
 
     while (Display.isActive) {
       import _root_.we.MCC.Vector3.Vector3
       // Clear the screen and depth buffer
       GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT)
 
-      Shapes.drawCube(Vector3(0.0,0,0), 2, (_:Orientation) => (1,1,1))
-      Shapes.drawCube(Vector3(2.0,2,0), 2, (_:Orientation) => (1,1,1))
+      Shapes.drawCube(Vector3(0.0,0,0), 2, color(_), texture(_))
+      Shapes.drawCube(Vector3(2.0,2,0), 2, color(_), texture(_))
 
       Display.update()
     }
@@ -90,22 +112,20 @@ object MCC {
       val v3 = v2 × orient.vect
       val v4 = v3 × orient.vect
       val vs = (v1 :: v2 :: v3 :: v4 :: Nil).map(_ * (size/2)).map(_ + center)
-      val tcs = (0.5,0.5) :: (0.5,0.0) :: (.0,.0) :: (.0,0.5) :: Nil
+      val tcs = (1.0,1.0) :: (1.0,0.0) :: (.0,.0) :: (.0,1.0) :: Nil
       // draw quad
       GL11.glBegin(GL11.GL_QUADS)
       GL11.glColor3d(color._1, color._2, color._3)
-      println("start:")
       for{(v,t) <- vs.zip(tcs)} {
-        println(t)
-        println(v)
         GL11.glTexCoord2d(t._1, t._2)
         GL11.glVertex3d(v.x, v.y, v.z)
       }
       GL11.glEnd()
     }
-    def drawCube(center: Vec, size: Double, color: Orientation => Color) = {
+    def drawCube(center: Vec, size: Double, color: Orientation => Color, texture: Orientation => Texture) = {
       val fs = Left :: Right :: Up :: Down :: Front :: Back :: Nil
       for(f <- fs) {
+        texture(f).bind
         drawFace(center + (f.vect * (size / 2)), size, f, color(f))
       }
     }
