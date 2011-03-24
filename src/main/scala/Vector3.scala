@@ -35,7 +35,7 @@ case class Vector3[A: Numeric] (val x:A, val y:A, val z:A){
   }
 
   def ⋅ = dot(_)
-  def dot = vecOp(_ * _) _
+  def dot(that:Vector3[A]) = (x * that.x) + (y * that.y) + (z * that.z)
 
   private lazy val zero = new Vector3[A](numeric.zero, numeric.zero, numeric.zero)
   def unary_- = {
