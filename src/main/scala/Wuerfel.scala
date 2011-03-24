@@ -38,12 +38,12 @@ class MCC {
     texture.bind
 
     while (Display.isActive) {
-      import _root_.we.MCC.Vector3D.Vector3D
+      import _root_.we.MCC.Vector3.Vector3
       // Clear the screen and depth buffer
       GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT)
 
-      Shapes.drawCube(Vector3D(0.0,0,0), 2, (_:Orientation) => (1,1,1))
-      Shapes.drawCube(Vector3D(2.0,2,0), 2, (_:Orientation) => (1,1,1))
+      Shapes.drawCube(Vector3(0.0,0,0), 2, (_:Orientation) => (1,1,1))
+      Shapes.drawCube(Vector3(2.0,2,0), 2, (_:Orientation) => (1,1,1))
 
       Display.update()
     }
@@ -54,7 +54,7 @@ class MCC {
 
 object MCC {
 
-  import _root_.we.MCC.Vector3D.Vector3D
+  import _root_.we.MCC.Vector3.Vector3
 
   val r = new scala.util.Random
     trait Drawable {
@@ -64,7 +64,7 @@ object MCC {
 
   // Should be some kind of a mathematical Vector
   type Color = (Double, Double, Double)
-  type Vec = Vector3D[Double]
+  type Vec = Vector3[Double]
   sealed abstract class Orientation {
       val vect: Vec
   }
@@ -77,14 +77,14 @@ object MCC {
 
   object Shapes {
     def drawFace(center: Vec, size: Double, orient: Orientation, color: Color = (r.nextDouble, r.nextDouble, r.nextDouble)) = {
-      import _root_.we.MCC.Vector3D.Vector3D
-      val v1:Vector3D[Double] = orient match {
-        case Left =>  Vector3D(0, 1, 1)
-        case Right => Vector3D(0, 1, 1)
-        case Front => Vector3D(1, 1, 0)
-        case Back =>  Vector3D(1, 1, 0)
-        case Up =>    Vector3D(1, 0, 1)
-        case Down =>  Vector3D(1, 0, 1)
+      import _root_.we.MCC.Vector3.Vector3
+      val v1:Vector3[Double] = orient match {
+        case Left =>  Vector3(0, 1, 1)
+        case Right => Vector3(0, 1, 1)
+        case Front => Vector3(1, 1, 0)
+        case Back =>  Vector3(1, 1, 0)
+        case Up =>    Vector3(1, 0, 1)
+        case Down =>  Vector3(1, 0, 1)
       }
       val v2 = v1 × orient.vect
       val v3 = v2 × orient.vect
