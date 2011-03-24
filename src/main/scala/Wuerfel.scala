@@ -5,6 +5,7 @@ import org.lwjgl.opengl.Display
 import org.lwjgl.opengl.DisplayMode
 import org.lwjgl.opengl.GL11
 import we.MCC.Vector3._
+import we.MCC.Math._
 
 import org.newdawn.slick.opengl.{
   TextureLoader,
@@ -40,6 +41,7 @@ class MCC {
 
     import MCC._
 
+    var q = Quaternion(0.0, Vector3(1.0, 0, 0))
 
     val texture: Map[Orientation, Texture] = Map(
       Left ->  TextureLoader.getTexture("JPG", new FileInputStream("src/main/resources/textureEis.jpg")),
@@ -58,12 +60,15 @@ class MCC {
       Front -> (1,1,1),
       Back ->  (1,1,1)
     )
+    
+    def glRotated(a: Double, b: Double, c: Double, d: Double) = GL11.glRotatef(a.toFloat, b.toFloat, c.toFloat, d.toFloat)
 
     while (Display.isActive) {
       import _root_.we.MCC.Vector3.Vector3
       // Clear the screen and depth buffer
       GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT)
-
+      glRotated(q.s, q.v.x, q.v.y, q.v.z)
+      q = q.copy(q.s + 0.01)
       Shapes.drawCube(Vector3(0.0,0,0), 2, color(_), texture(_))
       Shapes.drawCube(Vector3(2.0,2,0), 2, color(_), texture(_))
 
