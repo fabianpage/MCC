@@ -8,11 +8,13 @@ Todo list for Minecraft Clone
  - Ok (lla) Quaternions
   - Rotate
   - Create from normal vector and angle
-  
+  - Quaternions to rotation matrix
  - Grid (random)
  - Grid to file
  - Grid from file
  - Cube types
  - Navigation (Non-physical)
  - Navigation (Newtonic)
+ - Use Angle Class
+ - Texturcoordinaten korrigieren
  

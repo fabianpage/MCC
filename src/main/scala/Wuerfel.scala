@@ -6,6 +6,7 @@ import org.lwjgl.opengl.DisplayMode
 import org.lwjgl.opengl.GL11
 import we.MCC.Vector3._
 import we.MCC.Math._
+import we.MCC.wuerfel.MCC._
 
 import org.newdawn.slick.opengl.{
   TextureLoader,
@@ -27,10 +28,7 @@ class MCC {
     // init OpenGL
     GL11.glMatrixMode(GL11.GL_PROJECTION)
     GL11.glLoadIdentity()
-    GL11.glOrtho(0, 10, 10, 0, 10, -10)
     GL11.glMatrixMode(GL11.GL_MODELVIEW)
-    GL11.glTranslatef(5, 5, 5)
-    GL11.glRotatef(-10, 1, 1, 1)
     GL11.glEnable(GL11.GL_DEPTH_TEST)
     GL11.glDepthFunc(GL11.GL_LEQUAL)
     GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT,GL11.GL_NICEST)
@@ -39,9 +37,8 @@ class MCC {
     
     GL11.glViewport(0,0, 800, 600)
 
-    import MCC._
 
-    var q = Quaternion(0.0, Vector3(1.0, 0, 0))
+
 
     val texture: Map[Orientation, Texture] = Map(
       Left ->  TextureLoader.getTexture("JPG", new FileInputStream("src/main/resources/textureEis.jpg")),
@@ -51,7 +48,7 @@ class MCC {
       Front -> TextureLoader.getTexture("JPG", new FileInputStream("src/main/resources/textureFuef.jpg")),
       Back ->  TextureLoader.getTexture("JPG", new FileInputStream("src/main/resources/textureSechs.jpg"))
     )
-    
+
     val color: Map[Orientation, Color] = Map(
       Left ->  (1,1,0),
       Right -> (1,0,1),
@@ -60,15 +57,25 @@ class MCC {
       Front -> (1,1,1),
       Back ->  (1,1,1)
     )
-    
+
     def glRotated(a: Double, b: Double, c: Double, d: Double) = GL11.glRotatef(a.toFloat, b.toFloat, c.toFloat, d.toFloat)
 
+    var angle = 0.1
+    val step = 1
+
     while (Display.isActive) {
-      import _root_.we.MCC.Vector3.Vector3
+
       // Clear the screen and depth buffer
       GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT)
-      glRotated(q.s, q.v.x, q.v.y, q.v.z)
-      q = q.copy(q.s + 0.01)
+
+      GL11.glLoadIdentity
+      GL11.glOrtho(0, 10, 10, 0, 10, -10)
+      GL11.glTranslatef(5, 5, 5)
+      GL11.glRotatef(-10, 1, 1, 1)
+
+      angle += step
+      glRotated(angle, 0,1,0)
+
       Shapes.drawCube(Vector3(0.0,0,0), 2, color(_), texture(_))
       Shapes.drawCube(Vector3(2.0,2,0), 2, color(_), texture(_))
 
@@ -81,13 +88,10 @@ class MCC {
 
 object MCC {
 
-  import _root_.we.MCC.Vector3.Vector3
-
   val r = new scala.util.Random
     trait Drawable {
         def draw: Unit
     }
-    
 
   // Should be some kind of a mathematical Vector
   type Color = (Double, Double, Double)
