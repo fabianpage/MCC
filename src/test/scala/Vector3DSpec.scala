@@ -37,6 +37,12 @@ class Vector3DSpec extends FlatSpec with ShouldMatchers with Checkers {
     v1 × v2 should be(Vector3(0,0,1))
     v2 × v1 should be(Vector3(0,0,-1))
     v2 cross v1 should be(Vector3(0,0,-1))
+    
+    
+    val v = Vector3(10.0, 232, 324)
+    v cross v should be (Vector3(0,0,0))
+    
+    Vector3(1.,2,3) cross Vector3(6, 9, 2) should be (Vector3(-23., 16, -3))
   }
   
   it should "do an addition" in {
