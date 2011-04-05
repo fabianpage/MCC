@@ -3,7 +3,15 @@ Todo list for Minecraft Clone
 =============================
 
 
- - Implement Quaternions on the base of the Vector3
+ - (ε) Implement Quaternions on the base of the Vector3
  - Rotate the cubes using the quaternions
- - Quaternions: Normalize
- - 
+ - Quaternions
+  - Normalize
+  - Create from normal vector and angle
+ - Grid (random)
+ - Grid to file
+ - Grid from file
+ - Cube types
+ - Navigation (Non-physical)
+ - Navigation (Newtonic)
+ 
