@@ -1,5 +1,9 @@
 package we.MCC.Vector3;
 
+object Vector3{
+  implicit def VecIntToVecDouble(v: Vector3[Int]) : Vector3[Double] = Vector3[Double](v.x, v.y, v.z)
+}
+
 case class Vector3[A: Numeric] (val x:A, val y:A, val z:A){
 
   private type Vec = Vector3[A]
@@ -48,3 +52,4 @@ case class Vector3[A: Numeric] (val x:A, val y:A, val z:A){
 
   def - = vecOp(_ - _) _
 }
+

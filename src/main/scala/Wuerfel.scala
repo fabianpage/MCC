@@ -40,13 +40,13 @@ class MCC {
 
 
 
-    val texture: Map[Orientation, Texture] = Map(
-      Left ->  TextureLoader.getTexture("JPG", new FileInputStream("src/main/resources/textureEis.jpg")),
-      Right -> TextureLoader.getTexture("JPG", new FileInputStream("src/main/resources/textureZwei.jpg")),
-      Up ->    TextureLoader.getTexture("JPG", new FileInputStream("src/main/resources/textureDrei.jpg")),
-      Down ->  TextureLoader.getTexture("JPG", new FileInputStream("src/main/resources/textureVier.jpg")),
-      Front -> TextureLoader.getTexture("JPG", new FileInputStream("src/main/resources/textureFuef.jpg")),
-      Back ->  TextureLoader.getTexture("JPG", new FileInputStream("src/main/resources/textureSechs.jpg"))
+    lazy val texture: Map[Orientation, Option[Texture]] = Map(
+      Left ->  Some(TextureLoader.getTexture("JPG", new FileInputStream("src/main/resources/textureEis.jpg"))),
+      Right -> Some(TextureLoader.getTexture("JPG", new FileInputStream("src/main/resources/textureZwei.jpg"))),
+      Up ->    Some(TextureLoader.getTexture("JPG", new FileInputStream("src/main/resources/textureDrei.jpg"))),
+      Down ->  Some(TextureLoader.getTexture("JPG", new FileInputStream("src/main/resources/textureVier.jpg"))),
+      Front -> Some(TextureLoader.getTexture("JPG", new FileInputStream("src/main/resources/textureFuef.jpg"))),
+      Back ->  Some(TextureLoader.getTexture("JPG", new FileInputStream("src/main/resources/textureSechs.jpg")))
     )
 
     val color: Map[Orientation, Color] = Map(
@@ -58,15 +58,23 @@ class MCC {
       Back ->  (1,1,1)
     )
 
+    val grid = new Grid(
+          GridEntry(Vector3(0,0,0),GreenCube) ::
+          GridEntry(Vector3(1,0,0),RedCube) ::
+          GridEntry(Vector3(0,1,-1),BlueCube) ::
+          Nil
+      ,1.0)
+
     def glRotated(a: Double, b: Double, c: Double, d: Double) = GL11.glRotatef(a.toFloat, b.toFloat, c.toFloat, d.toFloat)
 
     var angle = 0.1
-    val step = 1
+    val step = 0.5
 
     while (Display.isActive) {
 
       // Clear the screen and depth buffer
       GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT)
+      GL11.glBindTexture(GL11.GL_TEXTURE_2D,0)
 
       GL11.glLoadIdentity
       GL11.glOrtho(0, 10, 10, 0, 10, -10)
@@ -76,8 +84,9 @@ class MCC {
       angle += step
       glRotated(angle, 0,1,0)
 
-      Shapes.drawCube(Vector3(0.0,0,0), 2, color(_), texture(_))
-      Shapes.drawCube(Vector3(2.0,2,0), 2, color(_), texture(_))
+      //Shapes.drawCube(Vector3(0.0,0,0), 2, color(_), texture(_))
+      //Shapes.drawCube(Vector3(2.0,2,0), 2, color(_), texture(_))
+      grid.draw
 
       Display.update()
     }
@@ -131,10 +140,10 @@ object MCC {
       }
       GL11.glEnd()
     }
-    def drawCube(center: Vec, size: Double, color: Orientation => Color, texture: Orientation => Texture) = {
+    def drawCube(center: Vec, size: Double, color: Orientation => Color, texture: Orientation => Option[Texture]) = {
       val fs = Left :: Right :: Up :: Down :: Front :: Back :: Nil
       for(f <- fs) {
-        texture(f).bind
+        texture(f).map(_.bind)
         drawFace(center + (f.vect * (size / 2)), size, f, color(f))
       }
     }
@@ -144,5 +153,21 @@ object MCC {
   def main(args: Array[String]) = {
     val w = new MCC
     w.start
+  }
+}
+
+abstract class CubeType(val color: Orientation => Color, val texture: Orientation => Option[Texture])
+case object GreenCube extends CubeType((_) => (0.,1.,0.), (_) => None)
+case object RedCube extends CubeType((_) => (1.,0.,0.), (_) => None)
+case object BlueCube extends CubeType((_) => (0.,0.,1.), (_) => None)
+
+case class GridEntry(location: Vector3[Int], cubeType:CubeType)
+
+class Grid(val entries: List[GridEntry], val spacing:Double) {
+  def draw = {
+    for( GridEntry(l,t) <- entries) {
+      val dl:Vector3[Double] = l
+      Shapes.drawCube(dl * spacing, spacing, t.color, t.texture)
+    }
   }
 }

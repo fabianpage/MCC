@@ -17,4 +17,7 @@ Todo list for Minecraft Clone
  - Navigation (Newtonic)
  - Use Angle Class
  - Texturcoordinaten korrigieren
- 
+ - clean up
+   - Package structure
+   - Files
+   -
