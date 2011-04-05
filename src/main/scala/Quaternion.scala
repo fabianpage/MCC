@@ -34,4 +34,13 @@ case class Quaternion(s: Double, v: Vector3[Double]) {
   def norm = sqrt(pow(s, 2) + pow(v.x, 2) + pow(v.y, 2) + pow(v.z, 2))
   
   def conjugate = Quaternion(s, Vector3(-v.x, -v.y, -v.z))
+
+  def rotate(v:Vector3[Double]) = {
+    val rotV = this * Quaternion(0,v) * this.conjugate
+    rotV.v
+  }
+
+  def rotate(q:Quaternion) = {
+    this * q * this.conjugate
+  }
 }

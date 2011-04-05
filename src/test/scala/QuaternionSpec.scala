@@ -35,6 +35,12 @@ class QuaternionSpec extends FlatSpec with ShouldMatchers {
     result.v.y should be(0. plusOrMinus 0.0000000001)
     result.v.z should be(1. plusOrMinus 0.0000000001)
     
+    val result2 = q.rotate(vector)
+    result2.x should be(0. plusOrMinus 0.0000000001)
+    result2.y should be(0. plusOrMinus 0.0000000001)
+    result2.z should be(1. plusOrMinus 0.0000000001)
+
+
     result.norm should be (1.0 plusOrMinus (Double.Epsilon))
   }
   
@@ -47,4 +53,6 @@ class QuaternionSpec extends FlatSpec with ShouldMatchers {
     val g = Grad(180.0)
     g.toRadian should be (Radian(scala.math.Pi))
   }
+
+
 }
