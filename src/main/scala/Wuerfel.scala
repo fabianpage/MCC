@@ -39,7 +39,7 @@ class MCC {
 
 
 
-
+    import Orientation._
     lazy val texture: Map[Orientation, Option[Texture]] = Map(
       Left ->  Some(TextureLoader.getTexture("JPG", new FileInputStream("src/main/resources/textureEis.jpg"))),
       Right -> Some(TextureLoader.getTexture("JPG", new FileInputStream("src/main/resources/textureZwei.jpg"))),
@@ -104,20 +104,22 @@ object MCC {
 
   // Should be some kind of a mathematical Vector
   type Color = (Double, Double, Double)
-  type Vec = Vector3[Double]
-  sealed abstract class Orientation {
-      val vect: Vec
+  
+  object Orientation extends Enumeration {
+    case class OrientationVal(name: String, norm: Vector3[Double]) extends Val(name)
+    type Orientation = OrientationVal
+    val Left =  OrientationVal("Left" , new Vector3(-1, 0, 0))
+    val Right = OrientationVal("Right", new Vector3(+1, 0, 0))
+    val Front = OrientationVal("Front", new Vector3( 0,+1, 0))
+    val Back =  OrientationVal("Back" , new Vector3( 0,-1, 0))
+    val Up =    OrientationVal("Up"   , new Vector3( 0, 0,+1))
+    val Down =  OrientationVal("Down" , new Vector3( 0, 0,-1))
+    implicit def valueToOrientation(v: Value): OrientationVal = v.asInstanceOf[OrientationVal]
   }
-  case object Left extends Orientation  { val vect: Vec = new Vec(-1, 0, 0) }
-  case object Right extends Orientation { val vect: Vec = new Vec(+1, 0, 0) }
-  case object Up extends Orientation    { val vect: Vec = new Vec( 0,+1, 0) }
-  case object Down extends Orientation  { val vect: Vec = new Vec( 0,-1, 0) }
-  case object Front extends Orientation { val vect: Vec = new Vec( 0, 0,+1) }
-  case object Back extends Orientation  { val vect: Vec = new Vec( 0, 0,-1) }
 
   object Shapes {
-    def drawFace(center: Vec, size: Double, orient: Orientation, color: Color = (r.nextDouble, r.nextDouble, r.nextDouble)) = {
-      import _root_.we.MCC.Vector3.Vector3
+    import Orientation._
+    def drawFace(center: Vector3[Double], size: Double, orient: Orientation, color: Color = (r.nextDouble, r.nextDouble, r.nextDouble)) = {
       val v1:Vector3[Double] = orient match {
         case Left =>  Vector3(0, 1, 1)
         case Right => Vector3(0, 1, 1)
@@ -126,9 +128,9 @@ object MCC {
         case Up =>    Vector3(1, 0, 1)
         case Down =>  Vector3(1, 0, 1)
       }
-      val v2 = v1 × orient.vect
-      val v3 = v2 × orient.vect
-      val v4 = v3 × orient.vect
+      val v2 = v1 × orient.norm
+      val v3 = v2 × orient.norm
+      val v4 = v3 × orient.norm
       val vs = (v1 :: v2 :: v3 :: v4 :: Nil).map(_ * (size/2)).map(_ + center)
       val tcs = (1.0,1.0) :: (1.0,0.0) :: (.0,.0) :: (.0,1.0) :: Nil
       // draw quad
@@ -140,11 +142,10 @@ object MCC {
       }
       GL11.glEnd()
     }
-    def drawCube(center: Vec, size: Double, color: Orientation => Color, texture: Orientation => Option[Texture]) = {
-      val fs = Left :: Right :: Up :: Down :: Front :: Back :: Nil
-      for(f <- fs) {
+    def drawCube(center: Vector3[Double], size: Double, color: Orientation => Color, texture: Orientation => Option[Texture]) = {
+      for(f <- Orientation.values) {
         texture(f).map(_.bind)
-        drawFace(center + (f.vect * (size / 2)), size, f, color(f))
+        drawFace(center + (f.norm * (size / 2)), size, f, color(f))
       }
     }
 
@@ -160,9 +161,9 @@ import we.MCC.storage._
 
 
 
-
+import Orientation._
 class CubeType(val color: Orientation => Color, val texture: Orientation => Option[Texture]) /*extends XMLSerializable*/ {
-  def toXML: NodeSeq = //<cubeType>{name}</cubeType>
+//  def toXML: NodeSeq = //<cubeType>{name}</cubeType>
 }
 case object GreenCube extends CubeType((_) => (0.,1.,0.), (_) => None)
 case object RedCube extends CubeType((_) => (1.,0.,0.), (_) => None)
@@ -182,13 +183,13 @@ class Grid(val entries: List[GridEntry], val spacing:Double) extends XMLSerializ
   }
 
   def toXML = {
-    val cubeTypes:IndexedSeq[CubeType] = entries.map(_.cubeType).distinct
+    val cubeTypes:List[CubeType] = entries.map(_.cubeType).distinct
     <grid>
       <cubes>
         {entries.map(entryToXml(_))}
       </cubes>
       <cubeTypes>
-        {cubeTypes.map()
+
       </cubeTypes>
     </grid>
   }
@@ -203,9 +204,4 @@ class Grid(val entries: List[GridEntry], val spacing:Double) extends XMLSerializ
       </cubeType>
     </cube>
   }
-
-
-
-
-
 }
