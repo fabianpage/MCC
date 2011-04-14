@@ -70,7 +70,10 @@ class MCC {
     var angle = 0.1
     val step = 0.5
 
-    while (Display.isActive) {
+    println(grid.toXML)
+
+    while(false) {
+    //while (Display.isActive) {
 
       // Clear the screen and depth buffer
       GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT)
@@ -163,7 +166,16 @@ import we.MCC.storage._
 
 import Orientation._
 class CubeType(val color: Orientation => Color, val texture: Orientation => Option[Texture]) /*extends XMLSerializable*/ {
-//  def toXML: NodeSeq = //<cubeType>{name}</cubeType>
+  def toXML: NodeSeq =
+    <cubeType>
+      {Orientation.values.map{f =>
+        <face orientation={f.toString}>
+          <color>{color(f).toString}</color>
+          <texture>{texture(f).toString}</texture>
+        </face>
+
+    }}
+    </cubeType>
 }
 case object GreenCube extends CubeType((_) => (0.,1.,0.), (_) => None)
 case object RedCube extends CubeType((_) => (1.,0.,0.), (_) => None)
@@ -184,24 +196,22 @@ class Grid(val entries: List[GridEntry], val spacing:Double) extends XMLSerializ
 
   def toXML = {
     val cubeTypes:List[CubeType] = entries.map(_.cubeType).distinct
+
+    def entryToXml(entry: GridEntry) = {
+      <cube>
+        <location>{entry.location.toXML}</location>
+        <cubeType>{cubeTypes.indexOf(entry.cubeType)}</cubeType>
+      </cube>
+    }
+
     <grid>
       <cubes>
         {entries.map(entryToXml(_))}
       </cubes>
       <cubeTypes>
-
+        {cubeTypes.map(_.toXML)}
       </cubeTypes>
     </grid>
   }
 
-  def entryToXml(entry: GridEntry) = {
-    <cube>
-      <location>
-        {entry.location.toXML}
-      </location>
-      <cubeType>
-        // TODO add Code here
-      </cubeType>
-    </cube>
-  }
 }
