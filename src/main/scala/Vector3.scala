@@ -55,6 +55,6 @@ case class Vector3[A: Numeric] (val x:A, val y:A, val z:A) extends XMLSerializab
 
   def - = vecOp(_ - _) _
   
-  override def toXML(useAs: String): NodeSeq = <{useAs} x={x.toString} y={y.toString} z={z.toString}/>
+  override def toXML: NodeSeq = <vector3 x={x.toString} y={y.toString} z={z.toString}/>
 }
 

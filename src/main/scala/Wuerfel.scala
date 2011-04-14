@@ -157,24 +157,55 @@ object MCC {
 }
 import scala.xml._
 import we.MCC.storage._
- 
-abstract class CubeType(val color: Orientation => Color, val texture: Orientation => Option[Texture]) extends XMLSerializable {
-  def toXML: NodeSeq = <cubeType>{getClass.getName.toString}</cubeType>
+
+
+
+
+class CubeType(val color: Orientation => Color, val texture: Orientation => Option[Texture]) /*extends XMLSerializable*/ {
+  def toXML: NodeSeq = //<cubeType>{name}</cubeType>
 }
 case object GreenCube extends CubeType((_) => (0.,1.,0.), (_) => None)
 case object RedCube extends CubeType((_) => (1.,0.,0.), (_) => None)
 case object BlueCube extends CubeType((_) => (0.,0.,1.), (_) => None)
 
 
-case class GridEntry(location: Vector3[Int], cubeType:CubeType) extends XMLSerializable {
-  def toXML: NodeSeq = <cube>{location.toXML ++ cubeType.toXML}</cube>
+case class GridEntry(location: Vector3[Int], cubeType:CubeType) /*extends XMLSerializable */{
+  //def toXML: NodeSeq = <cube>{location.toXML ++ cubeType.toXML}</cube>
 }
 
-class Grid(val entries: List[GridEntry], val spacing:Double) {
+class Grid(val entries: List[GridEntry], val spacing:Double) extends XMLSerializable{
   def draw = {
     for( GridEntry(l,t) <- entries) {
       val dl:Vector3[Double] = l
       Shapes.drawCube(dl * spacing, spacing, t.color, t.texture)
     }
   }
+
+  def toXML = {
+    val cubeTypes:IndexedSeq[CubeType] = entries.map(_.cubeType).distinct
+    <grid>
+      <cubes>
+        {entries.map(entryToXml(_))}
+      </cubes>
+      <cubeTypes>
+        {cubeTypes.map()
+      </cubeTypes>
+    </grid>
+  }
+
+  def entryToXml(entry: GridEntry) = {
+    <cube>
+      <location>
+        {entry.location.toXML}
+      </location>
+      <cubeType>
+        // TODO add Code here
+      </cubeType>
+    </cube>
+  }
+
+
+
+
+
 }
