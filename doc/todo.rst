@@ -8,8 +8,8 @@ Todo list for Minecraft Clone
  - Ok (lla) Quaternions
   - Rotate
   - Create from normal vector and angle
-  - Quaternions to rotation matrix
- - Grid (random)
+  - ~~Quaternions to rotation matrix~~
+ - Ok Grid (random)
  - Grid to file
  - Grid from file
  - Cube types

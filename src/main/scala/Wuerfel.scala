@@ -155,13 +155,20 @@ object MCC {
     w.start
   }
 }
-
-abstract class CubeType(val color: Orientation => Color, val texture: Orientation => Option[Texture])
+import scala.xml._
+import we.MCC.storage._
+ 
+abstract class CubeType(val color: Orientation => Color, val texture: Orientation => Option[Texture]) extends XMLSerializable {
+  def toXML: NodeSeq = <cubeType>{getClass.getName.toString}</cubeType>
+}
 case object GreenCube extends CubeType((_) => (0.,1.,0.), (_) => None)
 case object RedCube extends CubeType((_) => (1.,0.,0.), (_) => None)
 case object BlueCube extends CubeType((_) => (0.,0.,1.), (_) => None)
 
-case class GridEntry(location: Vector3[Int], cubeType:CubeType)
+
+case class GridEntry(location: Vector3[Int], cubeType:CubeType) extends XMLSerializable {
+  def toXML: NodeSeq = <cube>{location.toXML ++ cubeType.toXML}</cube>
+}
 
 class Grid(val entries: List[GridEntry], val spacing:Double) {
   def draw = {

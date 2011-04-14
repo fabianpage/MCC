@@ -4,8 +4,11 @@ object Vector3{
   implicit def VecIntToVecDouble(v: Vector3[Int]) : Vector3[Double] = Vector3[Double](v.x, v.y, v.z)
 }
 
-case class Vector3[A: Numeric] (val x:A, val y:A, val z:A){
+import we.MCC.storage._
+import scala.xml._
 
+case class Vector3[A: Numeric] (val x:A, val y:A, val z:A) extends XMLSerializable {
+  
   private type Vec = Vector3[A]
   private val numeric:Numeric[A] = implicitly[Numeric[A]]
 
@@ -51,5 +54,7 @@ case class Vector3[A: Numeric] (val x:A, val y:A, val z:A){
   def + = vecOp(_ + _) _
 
   def - = vecOp(_ - _) _
+  
+  override def toXML(useAs: String): NodeSeq = <{useAs} x={x.toString} y={y.toString} z={z.toString}/>
 }
 
